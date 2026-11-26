@@ -1,0 +1,196 @@
+{
+  "definitions": [
+    {
+      "title": "Section",
+      "id": "section",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/section/v1/section",
+            "template": {
+              "name": "Section",
+              "model": "section",
+              "style": "default",
+              "filter": "section"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "section",
+      "fields": [
+        {
+          "component": "select",
+          "name": "sec-spacing",
+          "value": "",
+          "label": "Spacing Top (padding top)",
+          "description": "Section top spacing, default is 32px.",
+          "valueType": "string",
+          "options": [
+            { "name": "Default spacing", "value": "sec-spacing-default" },
+            { "name": "No space / padding", "value": "section-none" },
+            { "name": "Spacing tiny", "value": "section-tiny" },
+            { "name": "Spacing xxsmall", "value": "section-xxsmall" },
+            { "name": "Spacing xsmall", "value": "section-xsmall" },
+            { "name": "Spacing regular", "value": "section-regular" },
+            { "name": "Spacing small", "value": "section-small" },
+            { "name": "Spacing medium", "value": "section-medium" },
+            { "name": "Spacing large", "value": "section-large" },
+            { "name": "Spacing xlarge", "value": "section-xlarge" },
+            { "name": "Spacing xxlarge", "value": "section-xxlarge" },
+            { "name": "Spacing huge", "value": "section-huge" },
+            { "name": "Spacing xhuge", "value": "section-xhuge" }
+          ]
+        },
+        {
+          "component": "select",
+          "name": "sec-spacing-bottom",
+          "value": "",
+          "label": "Spacing Bottom (padding bottom)",
+          "description": "Section bottom spacing, default is 32px.",
+          "valueType": "string",
+          "options": [
+            { "name": "Default spacing", "value": "sec-spacing-default" },
+            { "name": "No space / padding", "value": "section-none" },
+            { "name": "Spacing tiny", "value": "section-tiny" },
+            { "name": "Spacing xxsmall", "value": "section-xxsmall" },
+            { "name": "Spacing xsmall", "value": "section-xsmall" },
+            { "name": "Spacing regular", "value": "section-regular" },
+            { "name": "Spacing small", "value": "section-small" },
+            { "name": "Spacing medium", "value": "section-medium" },
+            { "name": "Spacing large", "value": "section-large" },
+            { "name": "Spacing xlarge", "value": "section-xlarge" },
+            { "name": "Spacing xxlarge", "value": "section-xxlarge" },
+            { "name": "Spacing huge", "value": "section-huge" },
+            { "name": "Spacing xhuge", "value": "section-xhuge" }
+          ]
+        },
+        {
+          "component": "select",
+          "name": "sec-swoosh",
+          "value": "",
+          "label": "Swoosh",
+          "valueType": "string",
+          "options": [
+            { "name": "No Swoosh", "value": "sec-swoosh-none" },
+            { "name": "Left Center Swoosh", "value": "sec-swoosh-type1" },
+            { "name": "Left Top Swoosh", "value": "sec-swoosh-type3" },
+            { "name": "Right Top Swoosh", "value": "sec-swoosh-type2" },
+            { "name": "Swoosh for BG inside container - Desktop", "value": "sec-swoosh-type5" },
+            { "name": "Leaders profile swoosh", "value": "sec-swoosh-type6" },
+            { "name": "Primary Blue 90 theme Swoosh", "value": "sec-swoosh-primary-blue-90" }
+          ]
+        },
+        {
+          "component": "select",
+          "name": "style",
+          "value": "",
+          "label": "Background style",
+          "valueType": "string",
+          "options": [
+            { "name": "Transparent / White / Default", "value": "bg-default" },
+            { "name": "Dark Background Container", "value": "bg-primary-blue" },
+            { "name": "Primary Blue 90", "value": "bg-primary-blue-90" },
+            { "name": "Primary Blue 70", "value": "bg-primary-blue-70" },
+            { "name": "Neutrals 10", "value": "bg-neutrals-10" },
+            { "name": "Neutrals 20", "value": "bg-neutrals-20" },
+            { "name": "Background Image", "value": "bg-image" }
+          ]
+        },
+        {
+          "component": "container",
+          "label": "Background Image",
+          "name": "container",
+          "valueType": "string",
+          "collapsible": false,
+          "condition": {
+            "==": [{ "var": "style" }, "bg-image"]
+          },
+          "fields": [
+            {
+              "component": "reference",
+              "valueType": "string",
+              "name": "image",
+              "label": "Background Image",
+              "multi": false
+            },
+            {
+              "component": "select",
+              "valueType": "string",
+              "name": "imageFit",
+              "label": "Image Fit",
+              "description": "How the background image fills the section area.",
+              "value": "fill",
+              "options": [
+                { "name": "Fill (recommended, crops to fit)", "value": "fill" },
+                { "name": "Contain (full image, may have gaps)", "value": "contain" },
+                { "name": "Stretch (fills exactly, may distort)", "value": "stretch" },
+                { "name": "Original (natural size, no scaling)", "value": "original" }
+              ]
+            },
+            {
+              "component": "select",
+              "valueType": "string",
+              "name": "imagePosition",
+              "label": "Focal Point",
+              "description": "Which part of the image stays visible when cropped.",
+              "value": "center",
+              "options": [
+                { "name": "Center", "value": "center" },
+                { "name": "Top", "value": "top" },
+                { "name": "Bottom", "value": "bottom" },
+                { "name": "Left", "value": "left" },
+                { "name": "Right", "value": "right" }
+              ]
+            }
+          ]
+        },
+        {
+          "component": "boolean",
+          "valueType": "boolean",
+          "name": "sec-inside-container",
+          "label": "Show background color inside container.",
+          "condition": {
+            "!=": [{ "var": "style" }, "bg-image"]
+          }
+        },
+        {
+          "component": "boolean",
+          "valueType": "boolean",
+          "name": "sec-width",
+          "label": "Reduce section width.",
+          "condition": {
+            "!=": [{ "var": "style" }, "bg-image"]
+          }
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "section",
+      "components": [
+	      "button",
+      	"cards",
+      	"carousel",
+      	"columns",
+      	"contentfragment",
+      	"dm-asset",
+      	"dm-template",
+      	"fragment",
+      	"hero",
+      	"iframe",
+      	"image",
+      	"teaser",
+      	"text",
+      	"title",
+      	"video",
+        "form",
+        "embed-adaptive-form"
+      ]
+    }
+  ]
+}

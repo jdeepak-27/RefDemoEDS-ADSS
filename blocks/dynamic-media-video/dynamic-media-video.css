@@ -1,0 +1,87 @@
+/*
+ * Dynamic Media video — smart crop
+ *
+ * How smart crop decides what to show:
+ * The DM SmartCropManager compares THIS BLOCK's clientWidth/clientHeight against
+ * the crop ratios authored on the asset, picks the closest one, then sets the
+ * <video> element's inline width/height to the frame's intrinsic pixel size and
+ * applies a scale()/translate() transform so only the crop region is visible.
+ *
+ * Three rules follow from that:
+ *
+ * 1. Never give `.dynamic-media-video video` a width, height, max-width or
+ *    object-fit. Those clamp or refit the box the transform was calculated
+ *    against, so the wrong region is shown.
+ *
+ * 2. The block needs a definite, non-16:9 box for any cropping to happen. With
+ *    no height of its own the block inherits the player's 16:9 padding box,
+ *    which always resolves to the Widescreen crop — the full, uncropped frame.
+ *    That is why smart crop appears to do nothing without the rules below.
+ *
+ * 3. Size the box with aspect-ratio, not a fixed pixel height, and do not add
+ *    max-height. A fixed height drifts away from the intended ratio as the
+ *    viewport widens, and a vh cap makes the ratio depend on window height —
+ *    both silently change which crop gets selected.
+ *
+ * The ratios map exactly onto the crops Dynamic Media generated for the asset
+ * (Widescreen 16:9, Standard 4:3, Square 1:1, VerticalFeed 4:5, Vertical 9:16),
+ * so selection is exact rather than approximate. Change the breakpoints freely,
+ * but keep each value equal to one of the authored crop ratios.
+ */
+
+.dynamic-media-video {
+  position: relative;
+  width: 100%;
+  z-index: 1;
+  overflow: hidden;
+  aspect-ratio: 16 / 9; /* Widescreen — full frame */
+}
+
+.dynamic-media-video-wrapper {
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+/* Standard 4:3 — landscape tablets */
+@media (max-width: 1199px) {
+  .dynamic-media-video {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+/* Square 1:1 — small tablets / large phones */
+@media (max-width: 899px) {
+  .dynamic-media-video {
+    aspect-ratio: 1 / 1;
+  }
+}
+
+/* VerticalFeed 4:5 — phones */
+@media (max-width: 599px) {
+  .dynamic-media-video {
+    aspect-ratio: 4 / 5;
+  }
+}
+
+/* Vertical 9:16 — narrow phones */
+@media (max-width: 479px) {
+  .dynamic-media-video {
+    aspect-ratio: 9 / 16;
+  }
+}
+
+/*
+ * The player must fill the block, so the box the manager measures is the box the
+ * video is drawn into. vjs-fluid is the current default and would otherwise
+ * impose its own 16:9 padding box; vjs-fill applies if the viewer is ever passed
+ * fill: true.
+ */
+.dynamic-media-video .video-js {
+  width: 100%;
+  height: 100%;
+}
+
+.dynamic-media-video .video-js.vjs-fluid {
+  padding-top: 0;
+}
